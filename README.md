@@ -1,2 +1,0 @@
-# equilibrium
-Axiom To Equilibrium
