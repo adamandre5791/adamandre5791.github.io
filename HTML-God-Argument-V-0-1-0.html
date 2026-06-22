@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axiom · to · Equilibrium</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      background: #f4f1ea;
+      color: #1e1e1e;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 880px;
+      width: 100%;
+      background: #ffffff;
+      padding: 32px 30px 40px;
+      border-radius: 40px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.07);
+      transition: 0.2s;
+    }
+
+    .lang-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px 8px;
+      margin-bottom: 6px;
+    }
+
+    .brand {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      color: #2e241a;
+    }
+    .brand small {
+      font-weight: 400;
+      font-size: 1rem;
+      color: #7a6a5a;
+      letter-spacing: 0.2px;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 6px;
+      background: #ede7dd;
+      padding: 4px;
+      border-radius: 60px;
+    }
+    .lang-toggle button {
+      background: transparent;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #3e2c1b;
+      transition: 0.2s;
+    }
+    .lang-toggle button.active-lang {
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    .lang-toggle button:hover {
+      background: #d4c5a9;
+    }
+
+    .subhead {
+      font-size: 1rem;
+      color: #7a6a5a;
+      border-bottom: 2px solid #e2d9cd;
+      padding-bottom: 18px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .nav-buttons button {
+      background: #e8e0d3;
+      border: none;
+      padding: 8px 26px;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #2e241a;
+      transition: 0.15s;
+    }
+    .nav-buttons button:hover {
+      background: #d0c0aa;
+      transform: scale(0.97);
+    }
+
+    .breadcrumb {
+      font-size: 0.9rem;
+      color: #5f4f3f;
+      background: #f0ebe3;
+      padding: 10px 22px;
+      border-radius: 60px;
+      display: inline-block;
+      margin-bottom: 28px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .menu, .sub-menu {
+      list-style: none;
+      padding: 0;
+    }
+    .menu li, .sub-menu li {
+      background: #f8f5f0;
+      margin-bottom: 12px;
+      padding: 18px 26px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 500;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .menu li:hover, .sub-menu li:hover {
+      background: #ece4d9;
+      border-color: #b8a68b;
+      transform: translateX(6px);
+    }
+    .menu li .icon, .sub-menu li .icon {
+      opacity: 0.7;
+      font-size: 1.2rem;
+    }
+
+    .answer-box {
+      background: #f2eee8;
+      padding: 32px 34px;
+      border-radius: 28px;
+      border-right: 8px solid #a68d70;
+      margin-top: 6px;
+      line-height: 1.9;
+      font-size: 1.05rem;
+    }
+    .answer-box p {
+      margin-bottom: 16px;
+    }
+    .answer-box .source {
+      font-size: 0.85rem;
+      color: #7a6a5a;
+      border-top: 1px solid #ddd6cc;
+      padding-top: 14px;
+      margin-top: 18px;
+    }
+
+    .back-home {
+      margin-top: 26px;
+      background: #d4c5a9;
+      border: none;
+      padding: 12px 40px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #1e1e1e;
+    }
+    .back-home:hover {
+      background: #bfae8e;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+    .fade {
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0.3; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 550px) {
+      .container { padding: 18px 14px; }
+      .brand { font-size: 1.5rem; }
+      .menu li, .sub-menu li { font-size: 0.95rem; padding: 14px 18px; }
+      .answer-box { padding: 22px 18px; font-size: 0.98rem; }
+      .breadcrumb { white-space: normal; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="app">
+  <div class="lang-header">
+    <div class="brand">
+      Axiom · to · Equilibrium
+      <small>⚖️</small>
+    </div>
+    <div class="lang-toggle" id="langToggle">
+      <button class="active-lang" data-lang="ar">🇸🇦 العربية</button>
+      <button data-lang="en">🇬🇧 English</button>
+    </div>
+  </div>
+
+  <div class="subhead">
+    <span id="subheadTitle">شجرة الأسئلة الوجودية</span>
+    <span style="font-size:0.85rem; color:#9a8a7a;" id="subheadMeta">من الوجود إلى الإسلام</span>
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="window.goHome()">🏠 <span id="btnHome">الرئيسية</span></button>
+    <button onclick="window.goBack()">↩ <span id="btnBack">رجوع</span></button>
+  </div>
+
+  <div class="breadcrumb" id="breadcrumb">الرئيسية</div>
+  <div id="content" class="fade"></div>
+</div>
+
+<script>
+  // =============================================================
+  //  DATA
+  // =============================================================
+  const LANG = { AR: 'ar', EN: 'en' };
+  let currentLang = 'ar';
+  let historyStack = [];
+
+  const treeData = {
+    text: { ar: '📌 اختر السؤال الوجودي الذي تريد استكشافه:', en: '📌 Choose the existential question you want to explore:' },
+    type: 'question',
+    children: [
+      {
+        text: { ar: '❶ هل الوجود مجرد صدفة أم له معنى وقصد؟', en: '❶ Is existence mere chance, or does it have meaning and purpose?' },
+        type: 'question',
+        children: [
+          { text: { ar: '🔹 المنظور الفلسفي: الوجود استثناء يدل على قصد', en: '🔹 Philosophical view: existence is an exception that indicates purpose' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: وجود الإنسان كائنًا واعيًا في هذا الكون ليس حدثًا عاديًا، بل هو استثنائي ومعجزة دائمة. غير أن الإنسان لما لم يشهد لنفسه حالًا غير حال النشأة، ألف الاستثناء حتى توهمه قاعدة، ووقع في غفلة منهجية حجبت عنه أنه يحمل في ذاته البرهان الذي يطلبه.', en: 'Answer: Human existence as a conscious being in this universe is not ordinary; it is exceptional and a permanent miracle. Yet because man has never witnessed himself in any state other than that of emergence, he became accustomed to the exception until he imagined it as a rule, falling into a methodological oblivion that veiled from him that he carries within himself the very proof he seeks.' }, type: 'answer' }] },
+          { text: { ar: '🔸 المنظور الوجودي: الإنسان يحمل الدليل في ذاته', en: '🔸 Existential view: man carries the proof within himself' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: الدليل المعجز على افتقار الإنسان وجوديًا ليس غائبًا يبحث عنه، بل هو "ذات الإنسان الواعية" التي يحملها بين جنبيه. فوجودك ذاته هو الشهادة الحية على أن للوجود مُبْدِئًا حكيمًا، وليس مجرد عبث عشوائي.', en: 'Answer: The miraculous evidence of man\'s existential need is not absent; it is his very conscious self that he carries within. Your very existence is the living testimony that existence has a wise Originator, not mere random chaos.' }, type: 'answer' }] },
+          { text: { ar: '🔹 المنظور المنطقي: كل ابتداء يستلزم مُبْدِئًا', en: '🔹 Logical view: every beginning necessitates an originator' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: كل ابتداء هو بطبيعته استثناء يقتضي مُبْدِئًا. والإنسان لم يشهد لنفسه حالًا غير حال النشأة، فظن الاستثناء قاعدة. لكن المنطق السليم يقول: كل موجود له ابتداء، وكل ابتداء يستلزم موجدًا، وهذا هو البرهان الأول على وجود الخالق.', en: 'Answer: Every beginning is by nature an exception that requires an originator. Man has never witnessed himself except in a state of emergence, so he mistook the exception for a rule. But sound logic says: every being has a beginning, and every beginning necessitates a creator – this is the first proof of the existence of God.' }, type: 'answer' }] }
+        ]
+      },
+      {
+        text: { ar: '❷ هل الإنسان حر حقًا، وما حدود مسؤوليته؟', en: '❷ Is man truly free, and what are the limits of his responsibility?' },
+        type: 'question',
+        children: [
+          { text: { ar: '🔸 حقيقة الحرية: حرية حقيقية ضمن إطار المتاح', en: '🔸 The reality of freedom: genuine freedom within the available framework' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: يتمتع الإنسان بحرية حقيقية وليست مجرد وهم، لكنها حرية محدودة بالخيارات المتاحة. في كل لحظة تجد أمامك عدة خيارات؛ أنت حر في الاختيار بينها، لكنك لست حرًا في خلق خيارات لم تتح لك. هذه الحرية المشروطة تضعك في موضع المسؤول.', en: 'Answer: Man enjoys genuine freedom, not mere illusion, but it is limited by the available options. At every moment you face several choices; you are free to choose among them, but you are not free to create options that are not given to you. This conditional freedom places you in a position of responsibility.' }, type: 'answer' }] },
+          { text: { ar: '🔹 أدوات المسؤولية: العقل والإرادة والوعي', en: '🔹 Tools of responsibility: reason, will, and consciousness' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: المسؤولية الأخلاقية والقانونية تقوم على ثلاثة مقومات: وعي يدرك، وعقل يميز بين الخير والشر، وإرادة تملك همة الفعل. هذه الأدوات تجعل الإنسان مسؤولًا عن أفعاله، لأنه يملك القدرة على النظر والاختيار.', en: 'Answer: Moral and legal responsibility rests on three pillars: consciousness that perceives, reason that distinguishes between good and evil, and will that possesses the drive to act. These tools make man responsible for his actions, for he has the ability to reflect and choose.' }, type: 'answer' }] },
+          { text: { ar: '🔸 متى يسقط التكليف؟', en: '🔸 When does obligation fall away?' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: لا يسقط التكليف والمسؤولية عن الإنسان إلا بعجز تام يثبت أنه فقد أحد مقومات التكليف (الوعي، العقل، أو الإرادة). فالمسؤولية لازمة وواجبة عقلاً وعدلاً على الإنسان تجاه من قوّاه بمقومات الوعي، ولا يسقط التكليف إلا بعجز قاطع.', en: 'Answer: Obligation and responsibility do not fall from man except by total incapacity that proves he has lost one of the pillars of obligation (consciousness, reason, or will). Responsibility is necessary and rationally incumbent upon man toward the One who empowered him with the means of consciousness, and obligation falls only by decisive incapacity.' }, type: 'answer' }] }
+        ]
+      },
+      {
+        text: { ar: '❸ لماذا يوجد شر في العالم مع وجود إله خير وقدير؟', en: '❸ Why does evil exist in the world if there is a good and omnipotent God?' },
+        type: 'question',
+        children: [
+          { text: { ar: '🔹 تعريف الشر: ليس جوهرًا بل فقدان للخير', en: '🔹 Definition of evil: not a substance but a privation of good' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: الشر ليس جوهرًا موجودًا بالمعنى الإيجابي، بل هو فقدان أو انحراف عن الخير. الشر يحدث كنتيجة ممكنة للاختيار الحر. فالخير هو الأصل الوجودي الكامل، والشر لا عين له في الخارج إلا بوصفه غيابًا للخير أو نقصًا فيه.', en: 'Answer: Evil is not a substance in the positive sense, but rather a loss or deviation from good. Evil occurs as a possible consequence of free choice. Good is the complete existential origin, and evil has no external reality except as an absence or deficiency of good.' }, type: 'answer' }] },
+          { text: { ar: '🔸 مصدر الشر: ينبع من نقص في الشرير', en: '🔸 Source of evil: stems from a deficiency in the evildoer' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: لا يكون الشر إلا من ناقص يسعى لسد خلته المادية أو المعنوية بطريق الباطل. فالسارق ينهب لسد حاجة مادية، والطاغية يروع الآمنين لسد حاجة معنوية. وبناء عليه: كل شرير ناقص، وليس كل ناقص شريرًا. والشر ليس قوة كونية مستقلة.', en: 'Answer: Evil only comes from one who is deficient, seeking to fill his material or moral void through falsehood. The thief steals to satisfy a material need, and the tyrant terrorizes the secure to satisfy a moral need. Thus: every evildoer is deficient, but not every deficient one is an evildoer. Evil is not an independent cosmic force.' }, type: 'answer' }] },
+          { text: { ar: '🔹 حكمة تأخير العقاب: سلامة الاختبار', en: '🔹 Wisdom in delaying punishment: the integrity of the test' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: لو وقع الجزاء فورًا عقب الذنب، لبطلت الحرية الحقيقية، وتحول الإنسان إلى كائن مسوق بالذعر الحسي لا بمحض النظر والتصديق. هذا الإرجاء الحكيم للعقوبة في الدنيا يستلزم عقلاً وجود ميعاد آخر مؤجل (يوم الدين) لتحقيق العدل الإلهي المطلق.', en: 'Answer: If punishment occurred immediately after sin, true freedom would be nullified, and man would become a being driven by sensory panic rather than by reflection and conviction. This wise postponement of punishment in this world rationally entails another deferred appointment (the Day of Judgment) to achieve absolute divine justice.' }, type: 'answer' }] }
+        ]
+      },
+      {
+        text: { ar: '❹ كيف نستدل على وجود الخالق وصفاته؟', en: '❹ How do we infer the existence of the Creator and His attributes?' },
+        type: 'question',
+        children: [
+          { text: { ar: '🔸 برهان الخلق من العدم: الدليل الأقوى', en: '🔸 Proof of creation from nothing: the strongest evidence' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: إيجاد الكون من العدم المحض دون حاجة إلى مواد خام سابقة هو البرهان القاطع على أن الخالق مطلق القوة. من يملك القدرة على تبديد العدم وإيجاد الأشياء لا لعلة احتياج، فهو الغني بذاته، المستغني عن كل ما سواه.', en: 'Answer: Bringing the universe into being from pure nothingness without prior raw materials is the decisive proof that the Creator is absolutely powerful. He who has the power to dispel nothingness and bring things into being without need is self-sufficient, independent of all else.' }, type: 'answer' }] },
+          { text: { ar: '🔹 برهان الإحكام والتناسق: دليل العلم والإرادة', en: '🔹 Proof of precision and harmony: evidence of knowledge and will' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: ما نعاينه في الكون من إحكام بديع، وقدرة باهرة، وتقدير موزون، يدل دلالة قاطعة على كمال صفات من أوجده. فالفعل المحكم لا يصدر إلا عن علم محيط، والنفاذ في العدم لا يكون إلا عن قدرة مطلقة، وتخصيص المخلوقات بهيئاتها لا يقع إلا بمشيئة نافذة.', en: 'Answer: What we observe in the universe of wondrous precision, astounding power, and balanced measure indicates with certainty the perfection of the attributes of its Originator. A precise act can only proceed from encompassing knowledge, penetration into nothingness requires absolute power, and specifying creatures with their forms can only be through effective will.' }, type: 'answer' }] },
+          { text: { ar: '🔸 استحالة الشريك والظلم: مقتضى الغنى المطلق', en: '🔸 Impossibility of partner and injustice: required by absolute self-sufficiency' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: الغنى المطلق للخالق يستلزم تنزيهه عن النقص والظلم، إذ الظلم لا يقع إلا من ناقص يسعى لسد خلته. كما أن الغنى المطلق يستلزم الوحدانية، فالشراكة أمارة الاحتياج والاستعانة بالغير، والخالق القوي بذاته لا يحتاج إلى شريك. فالتوحيد ضرورة عقلية عليا.', en: 'Answer: The absolute self-sufficiency of the Creator entails His being beyond deficiency and injustice, for injustice only proceeds from a deficient one seeking to fill a void. Likewise, absolute self-sufficiency entails oneness, for partnership is a sign of need and reliance on others, while the powerful Creator needs no partner. Thus monotheism is a supreme rational necessity.' }, type: 'answer' }] }
+        ]
+      },
+      {
+        text: { ar: '❺ لماذا الإسلام هو الخيار المنطقي الوحيد؟', en: '❺ Why is Islam the only logical choice?' },
+        type: 'question',
+        children: [
+          { text: { ar: '🔹 ضرورة الوحي: العدل يقتضي البيان', en: '🔹 Necessity of revelation: justice demands clarification' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: العدل الإلهي المطلق يمنع محاسبة المكلف قبل تبصيره بشروط المطلوب منه. والعقل البشري قاصر عن إدراك تفاصيل الغيب ومرضاة الرب بمفرده. فمن هنا كانت بعثة الرسل المؤيدين بالمعجزات هي الغاية المنطقية لقطع التعليل وإقامة الحجة البالغة.', en: 'Answer: Absolute divine justice prevents calling the accountable to account before he is informed of the conditions required of him. The human mind is incapable of grasping the details of the unseen and what pleases the Lord by itself. Hence the sending of messengers supported by miracles is the logical purpose to remove excuses and establish the conclusive argument.' }, type: 'answer' }] },
+          { text: { ar: '🔸 معايير الدين الحق: التنزيه والتوحيد والعدل', en: '🔸 Criteria of the true religion: transcendence, monotheism, and justice' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: الدين الذي يرتضيه العقل السليم يجب أن: (1) ينزه الله عن كل نقص وظلم، (2) يؤكد كماله ووحدانيته، (3) يعترف بمسؤولية الإنسان الحقيقية، (4) يؤمن بيوم الحساب، (5) يوحد الرسالة السماوية. هذه المعايير هي محكّ النظر العقلي للتمييز بين الأديان.', en: 'Answer: The religion that sound reason approves must: (1) exalt God above every deficiency and injustice, (2) affirm His perfection and oneness, (3) acknowledge man\'s true responsibility, (4) believe in the Day of Reckoning, (5) unify the heavenly message. These criteria are the touchstone of rational reflection to distinguish between religions.' }, type: 'answer' }] },
+          { text: { ar: '🔹 حصرية الإسلام: الخيار المنطقي الوحيد', en: '🔹 Exclusivity of Islam: the only logical option' },
+            type: 'perspective', children: [{ text: { ar: 'الإجابة: عند عرض الأديان على هذه المعايير، تسقط كلها؛ إما لنسبتها الشريك أو الند للخالق، أو لنسبتها النقص والتجسد له. فلا يبقى في ميدان النظر إلا الإسلام؛ لا بوصفه رأيًا ترجيحيًا، بل كونه النظير المنطقي الوحيد الذي يفرد الله بالتوحيد الخالص، ويحقق حكمة التكليف، ويكون خاتمة الإيمان الناجي. ومن طلب الحق في غيره ناقض صريح عقله.', en: 'Answer: When religions are measured against these criteria, all fall short – either by ascribing partners or rivals to the Creator, or by attributing deficiency or incarnation to Him. Nothing remains in the field of reflection except Islam; not as a preferential opinion, but as the only logical counterpart that singles out God with pure monotheism, fulfills the wisdom of obligation, and stands as the final salvation. Whoever seeks the truth elsewhere contradicts his own reason.' }, type: 'answer' }] }
+        ]
+      }
+    ]
+  };
+
+  // =============================================================
+  //  HELPERS
+  // =============================================================
+  function getText(node) {
+    if (!node) return '';
+    if (typeof node.text === 'string') return node.text;
+    return node.text[currentLang] || node.text['ar'] || '';
+  }
+
+  function getTitle(node) {
+    if (!node) return '';
+    if (node === treeData) return getText(node);
+    if (node.text) return getText(node);
+    return '';
+  }
+
+  function buildBreadcrumb() {
+    if (!historyStack.length) return 'Axiom · to · Equilibrium';
+    const parts = historyStack.map(n => getTitle(n));
+    return parts.join(' › ');
+  }
+
+  // =============================================================
+  //  RENDER
+  // =============================================================
+  function render(node) {
+    if (!node) return;
+    const path = buildBreadcrumb();
+    document.getElementById('breadcrumb').textContent = path || 'Axiom · to · Equilibrium';
+
+    // update subhead based on language
+    const subheadTitle = document.getElementById('subheadTitle');
+    const subheadMeta = document.getElementById('subheadMeta');
+    const btnHome = document.getElementById('btnHome');
+    const btnBack = document.getElementById('btnBack');
+
+    if (currentLang === 'ar') {
+      subheadTitle.textContent = 'شجرة الأسئلة الوجودية';
+      subheadMeta.textContent = 'من الوجود إلى الإسلام · برهان عقلي متسلسل';
+      btnHome.textContent = 'الرئيسية';
+      btnBack.textContent = 'رجوع';
+    } else {
+      subheadTitle.textContent = 'The Tree of Existential Questions';
+      subheadMeta.textContent = 'from existence to Islam · a sequential rational proof';
+      btnHome.textContent = 'Home';
+      btnBack.textContent = 'Back';
+    }
+
+    let html = '';
+    if (node.type === 'question') {
+      html = `<ul class="menu">`;
+      node.children.forEach(child => {
+        const label = getText(child);
+        html += `<li onclick="window.navigateTo('${encodeURIComponent(label)}')">
+                    <span class="icon">▸</span> ${label}
+                </li>`;
+      });
+      html += `</ul>`;
+    } else if (node.type === 'perspective') {
+      html = `<ul class="sub-menu">`;
+      node.children.forEach(child => {
+        const label = getText(child);
+        html += `<li onclick="window.navigateTo('${encodeURIComponent(label)}')">
+                    <span class="icon">◈</span> ${label}
+                </li>`;
+      });
+      html += `</ul>`;
+    } else if (node.type === 'answer') {
+      const answerText = getText(node);
+      html = `<div class="answer-box">
+                <p>📖 ${answerText}</p>
+                <div class="source">— ${currentLang === 'ar' ? 'مستخلص من المنظومة العقلية المتكاملة' : 'abstracted from the integrated rational system'}</div>
+              </div>
+              <button class="back-home" onclick="window.goHome()">⬅ ${currentLang === 'ar' ? 'العودة إلى الرئيسية' : 'Return to Home'}</button>`;
+    }
+
+    const contentEl = document.getElementById('content');
+    contentEl.innerHTML = html;
+    contentEl.classList.remove('fade');
+    setTimeout(() => contentEl.classList.add('fade'), 10);
+  }
+
+  // =============================================================
+  //  NAVIGATION
+  // =============================================================
+  function navigateTo(encodedLabel) {
+    const label = decodeURIComponent(encodedLabel);
+    const current = historyStack[historyStack.length - 1];
+    if (!current || !current.children) return;
+    const found = current.children.find(ch => getText(ch) === label);
+    if (!found) { goHome(); return; }
+    historyStack.push(found);
+    render(found);
+  }
+
+  function goBack() {
+    if (historyStack.length > 1) {
+      historyStack.pop();
+      render(historyStack[historyStack.length - 1]);
+    } else {
+      alert(currentLang === 'ar' ? 'أنت بالفعل في الصفحة الرئيسية.' : 'You are already on the home page.');
+    }
+  }
+
+  function goHome() {
+    historyStack = [treeData];
+    render(treeData);
+  }
+
+  // =============================================================
+  //  LANGUAGE SWITCH
+  // =============================================================
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-toggle button').forEach(btn => {
+      btn.classList.toggle('active-lang', btn.dataset.lang === lang);
+    });
+    if (historyStack.length === 0) goHome();
+    else render(historyStack[historyStack.length - 1]);
+  }
+
+  // =============================================================
+  //  INIT
+  // =============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.lang-toggle button').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const lang = e.target.dataset.lang;
+        setLanguage(lang);
+      });
+    });
+    goHome();
+  });
+
+  // make functions globally accessible for inline onclick
+  window.navigateTo = navigateTo;
+  window.goBack = goBack;
+  window.goHome = goHome;
+  window.setLanguage = setLanguage;
+</script>
+</body>
+</html>
